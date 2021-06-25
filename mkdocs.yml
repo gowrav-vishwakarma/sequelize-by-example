@@ -1,0 +1,16 @@
+site_name: Sequelize By Example
+repo_url: https://github.com/gowrav-vishwakarma/sequelize-by-example.git
+theme: readthedocs
+nav:
+    - Overview: index.md
+    - MySQL_V5:
+      - Models: "MySQL/V5/models/withdefine.md"
+    - CONTIBUTE: how-to-contribute.md
+    
+plugins:
+    - search
+    - mermaid2:
+        arguments:
+          theme: 'dark'
+extra_javascript:
+    - https://unpkg.com/mermaid/dist/mermaid.min.js
