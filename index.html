@@ -1,0 +1,416 @@
+<!DOCTYPE html>
+
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en"> <!--<![endif]-->
+<head>
+<meta charset="utf-8"/>
+<meta content="IE=edge" http-equiv="X-UA-Compatible"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<meta content="None" name="description"/>
+<link href="img/favicon.ico" rel="shortcut icon"/>
+<title>Sequelize By Example</title>
+<link href="https://fonts.googleapis.com/css?family=Lato:400,700|Roboto+Slab:400,700|Inconsolata:400,700" rel="stylesheet">
+<link href="css/theme.css" rel="stylesheet"/>
+<link href="css/theme_extra.css" rel="stylesheet"/>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/github.min.css" rel="stylesheet"/>
+<script>
+    // Current page data
+    var mkdocs_page_name = "Overview";
+    var mkdocs_page_input_path = "index.md";
+    var mkdocs_page_url = null;
+  </script>
+<script defer="" src="js/jquery-2.1.1.min.js"></script>
+<script defer="" src="js/modernizr-2.8.3.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+<script>hljs.initHighlightingOnLoad();</script>
+</link></head>
+<body class="wy-body-for-nav" role="document">
+<div class="wy-grid-for-nav">
+<nav class="wy-nav-side stickynav" data-toggle="wy-nav-shift">
+<div class="wy-side-scroll">
+<div class="wy-side-nav-search">
+<a class="icon icon-home" href="."> Sequelize By Example</a>
+<div role="search">
+<form action="./search.html" class="wy-form" id="rtd-search-form" method="get">
+<input name="q" placeholder="Search docs" title="Type search term here" type="text"/>
+</form>
+</div>
+</div>
+<div aria-label="main navigation" class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation">
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal current" href=".">Overview</a>
+<ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="#start-with-mysql-and-v5-only">Start with MySQL and V5 only</a>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#main-focus">Main Focus</a>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#sample-database">Sample Database</a>
+</li>
+</ul>
+</li>
+</ul>
+<p class="caption"><span class="caption-text">MySQL_V5</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="MySQL/V5/models/withdefine/">Models</a>
+</li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="how-to-contribute/">CONTIBUTE</a>
+</li>
+</ul>
+</div>
+</div>
+</nav>
+<section class="wy-nav-content-wrap" data-toggle="wy-nav-shift">
+<nav aria-label="top navigation" class="wy-nav-top" role="navigation">
+<i class="fa fa-bars" data-toggle="wy-nav-top"></i>
+<a href=".">Sequelize By Example</a>
+</nav>
+<div class="wy-nav-content">
+<div class="rst-content">
+<div aria-label="breadcrumbs navigation" role="navigation">
+<ul class="wy-breadcrumbs">
+<li><a href=".">Docs</a> »</li>
+<li>Overview</li>
+<li class="wy-breadcrumbs-aside">
+<a class="icon icon-github" href="https://github.com/gowrav-vishwakarma/sequelize-by-example.git/edit/master/docs/index.md"> Edit on GitHub</a>
+</li>
+</ul>
+<hr/>
+</div>
+<div role="main">
+<div class="section">
+<h1 id="welcome-to-sequelizebyexample">Welcome to SequelizeByExample</h1>
+<p>This is a community initiative to make alternative way to document things by example. To have examples, this document follows a sample data structure. The structure is designed to cover as much examples out of it, as a developer may need from sequelize project.</p>
+<p>Also this document provides best practises with Sequelize.</p>
+<h2 id="start-with-mysql-and-v5-only">Start with MySQL and V5 only</h2>
+<p>We works mostly in MySQL and our current version is V5, but we are structuring the document as such, that, others can contribute for other versions or other dialects also.</p>
+<h2 id="main-focus">Main Focus</h2>
+<p>Main focus will always be on Reading like Reporting, Grouping, Nested Data with Conditions etc. 
+Also we will try to simplyfy some of technical things under the hood.</p>
+<h2 id="sample-database">Sample Database</h2>
+<p>Following will be sample database structure used for our examples, we will try our level best to cover as much real life cases as we can.</p>
+<p>If you have any case or want to add some other way of solution or change the database structure, you are welcome to contribute. Please check CONTRIBUTION section for more.</p>
+<div class="mermaid">erDiagram
+          CUSTOMER }|..|{ DELIVERY-ADDRESS : has
+          CUSTOMER }|..o{ FRIENDS : has
+          FRIENDS }|..o{ CUSTOMER : has
+          CUSTOMER ||--o{ ORDER : places
+          CUSTOMER ||--o{ INVOICE : "liable for"
+          DELIVERY-ADDRESS ||--o{ ORDER : billing-address
+          DELIVERY-ADDRESS ||--o{ ORDER : shipping-address
+          DELIVERY-ADDRESS ||--o{ INVOICE : billing-address
+          INVOICE ||--|{ ORDER : covers
+          INVOICE }|--|| INVOICE-ITEM : has
+          ORDER ||--|{ ORDER-ITEM : includes
+          PRODUCT-CATEGORY ||--|{ PRODUCT : contains
+          PRODUCT-CATEGORY }o--o{ PRODUCT-CATEGORY : has
+          PRODUCT ||--o{ ORDER-ITEM : "ordered in"
+          PRODUCT ||--o{ INVOICE-ITEM : "invoiced in"
+
+          CUSTOMER {
+            id int
+            name string
+            city string
+            state string
+            status string
+            createdAt datetime
+            updatedAt datetime
+          }
+
+          FRIENDS{
+            id int
+            status string
+            createdAt datetime
+            updatedAt datetime
+          }
+
+          DELIVERY-ADDRESS{
+            id int
+            customerId int
+            address string
+            city string
+            state string
+            createdAt datetime
+            updatedAt datetime
+          }
+
+          INVOICE{
+            id int
+            orderId int
+            customerId int
+            grossAmount double
+            tax double
+            discount double
+            netAmount double
+            billingId int
+            billingDetails json
+            status string
+            createdAt datetime
+            updatedAt datetime
+          }
+
+          INVOICE-ITEM{
+            id int
+            invoiceId int
+            productId int
+            price double
+            quantity int
+            grossAmount double
+            tax double
+            discount double
+            netAmount double
+            status string
+            createdAt datetime
+            updatedAt datetime
+          }
+
+          ORDER {
+            id int
+            customerId int
+            grossAmount double
+            tax double
+            discount double
+            netAmount double
+            billingId int
+            billingDetails json
+            shippingId int
+            shippingDetails json
+            status string
+            createdAt datetime
+            updatedAt datetime
+          }
+
+          ORDER-ITEM {
+            id int
+            orderId int
+            productId int
+            productDetails json
+            price double
+            quantity int
+            grossAmount double
+            tax double
+            discount double
+            netAmount double
+            status string
+            createdAt datetime
+            updatedAt datetime
+          }
+
+          PRODUCT {
+            id int
+            categoryId int
+            sku string
+            basePrice double
+            status string
+            createdAt datetime
+            updatedAt datetime
+          }
+
+          PRODUCT-CATEGORY {
+            id int
+            name int
+            parentId int
+            path text
+            status string
+            createdAt datetime
+            updatedAt datetime
+          }                          
+</div>
+<h1 id="relations-in-simple-text">Relations in simple text</h1>
+<pre><code>Customer blongsToMany Customers through Frends
+Customer hasMany Deliver Addresses
+Customer hasMany Orders
+Customer hasMany Invoices
+
+DeliverAddresses belongsTo Customer
+DeliverAddresses hasMany Orders as OrderBillingAddresses
+DeliverAddresses hasMany Orders as OrderShippingAddresses
+DeliverAddresses hasMany Invoices as InvoiceBillingAddresses
+
+Order belongsTo Customer
+Order hasMany OrderItem
+Order hasOne Invoice
+OrderItem belongsTo Product
+
+Invoice belongsTo Customer
+Invoice hasMany InvoiceItem
+Invoice belongsTo DeliveryAddresses
+
+InvoiceItem belongsTo Invoice
+InvoiceItem belongsTo Product
+
+Product hasMany OrderItems
+Product hasMany InvoiceItems
+Product belongsTo Category
+
+Category hasMany Products
+Category belongsTo Category as ParentCategory
+Category hasMany Category as ChildrenCategories
+
+</code></pre>
+<p>Use the following code on mermaid to generate the above diagram</p>
+<pre><code class="language-json">erDiagram
+          CUSTOMER }|..|{ DELIVERY-ADDRESS : has
+          CUSTOMER }|..o{ FRIENDS : has
+          FRIENDS }|..o{ CUSTOMER : has
+          CUSTOMER ||--o{ ORDER : places
+          CUSTOMER ||--o{ INVOICE : "liable for"
+          DELIVERY-ADDRESS ||--o{ ORDER : receives
+          INVOICE ||--|{ ORDER : covers
+          INVOICE }|--|| INVOICE-ITEM : has
+          ORDER ||--|{ ORDER-ITEM : includes
+          PRODUCT-CATEGORY ||--|{ PRODUCT : contains
+          PRODUCT-CATEGORY }o--o{ PRODUCT-CATEGORY : has
+          PRODUCT ||--o{ ORDER-ITEM : "ordered in"
+          PRODUCT ||--o{ INVOICE-ITEM : "invoiced in"
+
+          CUSTOMER {
+            id int
+            name string
+            city string
+            state string
+            status string
+            createdAt datetime
+            updatedAt datetime
+          }
+
+          FRIENDS{
+            id int
+            status string
+            createdAt datetime
+            updatedAt datetime
+          }
+
+          DELIVERY-ADDRESS{
+            id int
+            customerId int
+            address string
+            city string
+            state string
+            createdAt datetime
+            updatedAt datetime
+          }
+
+          INVOICE{
+            id int
+            orderId int
+            grossAmount double
+            tax double
+            discount double
+            netAmount double
+            billingId int
+            billingDetails json
+            status string
+            createdAt datetime
+            updatedAt datetime
+          }
+
+          INVOICE-ITEM{
+            id int
+            invoiceId int
+            productId int
+            price double
+            quantity int
+            grossAmount double
+            tax double
+            discount double
+            netAmount double
+            status string
+            createdAt datetime
+            updatedAt datetime
+          }
+
+          ORDER {
+            id int
+            grossAmount double
+            tax double
+            discount double
+            netAmount double
+            billingId int
+            billingDetails json
+            shippingId int
+            shippingDetails json
+            status string
+            createdAt datetime
+            updatedAt datetime
+          }
+
+          ORDER-ITEM {
+            id int
+            orderId int
+            productId int
+            productDetails json
+            price double
+            quantity int
+            grossAmount double
+            tax double
+            discount double
+            netAmount double
+            status string
+            createdAt datetime
+            updatedAt datetime
+          }
+
+          PRODUCT {
+            id int
+            categoryId int
+            sku string
+            basePrice double
+            status string
+            createdAt datetime
+            updatedAt datetime
+          }
+
+          PRODUCT-CATEGORY {
+            id int
+            name int
+            parentId int
+            path text
+            status string
+            createdAt datetime
+            updatedAt datetime
+          }
+</code></pre>
+<p><a href="https://mermaid-js.github.io/mermaid-live-editor/">Mermaid Js Online Editor</a></p>
+<p><a href="https://mermaid-js.github.io/mermaid-live-editor/edit#eyJjb2RlIjoiZXJEaWFncmFtXG4gICAgICAgICAgQ1VTVE9NRVIgfXwuLnx7IERFTElWRVJZLUFERFJFU1MgOiBoYXNcbiAgICAgICAgICBDVVNUT01FUiB8fC0tb3sgT1JERVIgOiBwbGFjZXNcbiAgICAgICAgICBDVVNUT01FUiB8fC0tb3sgSU5WT0lDRSA6IFwibGlhYmxlIGZvclwiXG4gICAgICAgICAgREVMSVZFUlktQUREUkVTUyB8fC0tb3sgT1JERVIgOiByZWNlaXZlc1xuICAgICAgICAgIElOVk9JQ0UgfHwtLXx7IE9SREVSIDogY292ZXJzXG4gICAgICAgICAgSU5WT0lDRSB9fC0tfHwgSU5WT0lDRS1JVEVNIDogaGFzXG4gICAgICAgICAgT1JERVIgfHwtLXx7IE9SREVSLUlURU0gOiBpbmNsdWRlc1xuICAgICAgICAgIFBST0RVQ1QtQ0FURUdPUlkgfHwtLXx7IFBST0RVQ1QgOiBjb250YWluc1xuICAgICAgICAgIFBST0RVQ1QtQ0FURUdPUlkgfW8tLW97IFBST0RVQ1QtQ0FURUdPUlkgOiBoYXNcbiAgICAgICAgICBQUk9EVUNUIHx8LS1veyBPUkRFUi1JVEVNIDogXCJvcmRlcmVkIGluXCJcbiAgICAgICAgICBQUk9EVUNUIHx8LS1veyBJTlZPSUNFLUlURU0gOiBcImludm9pY2VkIGluXCJcbiAgICAgICAgICBcbiAgICAgICAgICBDVVNUT01FUiB7XG4gICAgICAgICAgICBpZCBpbnRcbiAgICAgICAgICAgIG5hbWUgc3RyaW5nXG4gICAgICAgICAgICBjaXR5IHN0cmluZ1xuICAgICAgICAgICAgc3RhdGUgc3RyaW5nXG4gICAgICAgICAgICBjcmVhdGVkQXQgZGF0ZXRpbWVcbiAgICAgICAgICAgIHVwZGF0ZWRBdCBkYXRldGltZVxuICAgICAgICAgIH1cblxuICAgICAgICAgIERFTElWRVJZLUFERFJFU1N7XG4gICAgICAgICAgICBpZCBpbnRcbiAgICAgICAgICAgIGN1c3RvbWVySWQgaW50XG4gICAgICAgICAgICBhZGRyZXNzIHN0cmluZ1xuICAgICAgICAgICAgY2l0eSBzdHJpbmdcbiAgICAgICAgICAgIHN0YXRlIHN0cmluZ1xuICAgICAgICAgICAgY3JlYXRlZEF0IGRhdGV0aW1lXG4gICAgICAgICAgICB1cGRhdGVkQXQgZGF0ZXRpbWVcbiAgICAgICAgICB9XG5cbiAgICAgICAgICBJTlZPSUNFe1xuICAgICAgICAgICAgaWQgaW50XG4gICAgICAgICAgICBvcmRlcklkIGludFxuICAgICAgICAgICAgZ3Jvc3NBbW91bnQgZG91YmxlXG4gICAgICAgICAgICB0YXggZG91YmxlXG4gICAgICAgICAgICBkaXNjb3VudCBkb3VibGVcbiAgICAgICAgICAgIG5ldEFtb3VudCBkb3VibGVcbiAgICAgICAgICAgIGJpbGxpbmdJZCBpbnRcbiAgICAgICAgICAgIGJpbGxpbmdEZXRhaWxzIGpzb25cbiAgICAgICAgICAgIGNyZWF0ZWRBdCBkYXRldGltZVxuICAgICAgICAgICAgdXBkYXRlZEF0IGRhdGV0aW1lXG4gICAgICAgICAgfVxuXG4gICAgICAgICAgSU5WT0lDRS1JVEVNe1xuICAgICAgICAgICAgaWQgaW50XG4gICAgICAgICAgICBpbnZvaWNlSWQgaW50XG4gICAgICAgICAgICBwcm9kdWN0SWQgaW50XG4gICAgICAgICAgICBwcmljZSBkb3VibGVcbiAgICAgICAgICAgIHF1YW50aXR5IGludFxuICAgICAgICAgICAgZ3Jvc3NBbW91bnQgZG91YmxlXG4gICAgICAgICAgICB0YXggZG91YmxlXG4gICAgICAgICAgICBkaXNjb3VudCBkb3VibGVcbiAgICAgICAgICAgIG5ldEFtb3VudCBkb3VibGVcbiAgICAgICAgICAgIGNyZWF0ZWRBdCBkYXRldGltZVxuICAgICAgICAgICAgdXBkYXRlZEF0IGRhdGV0aW1lXG4gICAgICAgICAgfVxuXG4gICAgICAgICAgT1JERVIge1xuICAgICAgICAgICAgaWQgaW50XG4gICAgICAgICAgICBncm9zc0Ftb3VudCBkb3VibGVcbiAgICAgICAgICAgIHRheCBkb3VibGVcbiAgICAgICAgICAgIGRpc2NvdW50IGRvdWJsZVxuICAgICAgICAgICAgbmV0QW1vdW50IGRvdWJsZVxuICAgICAgICAgICAgYmlsbGluZ0lkIGludFxuICAgICAgICAgICAgYmlsbGluZ0RldGFpbHMganNvblxuICAgICAgICAgICAgc2hpcHBpbmdJZCBpbnRcbiAgICAgICAgICAgIHNoaXBwaW5nRGV0YWlscyBqc29uXG4gICAgICAgICAgICBjcmVhdGVkQXQgZGF0ZXRpbWVcbiAgICAgICAgICAgIHVwZGF0ZWRBdCBkYXRldGltZVxuICAgICAgICAgIH1cblxuICAgICAgICAgIE9SREVSLUlURU0ge1xuICAgICAgICAgICAgaWQgaW50XG4gICAgICAgICAgICBvcmRlcklkIGludFxuICAgICAgICAgICAgcHJvZHVjdElkIGludFxuICAgICAgICAgICAgcHJvZHVjdERldGFpbHMganNvblxuICAgICAgICAgICAgcHJpY2UgZG91YmxlXG4gICAgICAgICAgICBxdWFudGl0eSBpbnRcbiAgICAgICAgICAgIGdyb3NzQW1vdW50IGRvdWJsZVxuICAgICAgICAgICAgdGF4IGRvdWJsZVxuICAgICAgICAgICAgZGlzY291bnQgZG91YmxlXG4gICAgICAgICAgICBuZXRBbW91bnQgZG91YmxlXG4gICAgICAgICAgICBjcmVhdGVkQXQgZGF0ZXRpbWVcbiAgICAgICAgICAgIHVwZGF0ZWRBdCBkYXRldGltZVxuICAgICAgICAgIH1cblxuICAgICAgICAgIFBST0RVQ1Qge1xuICAgICAgICAgICAgaWQgaW50XG4gICAgICAgICAgICBjYXRlZ29yeUlkIGludFxuICAgICAgICAgICAgc2t1IHN0cmluZ1xuICAgICAgICAgICAgYmFzZVByaWNlIGRvdWJsZVxuICAgICAgICAgICAgY3JlYXRlZEF0IGRhdGV0aW1lXG4gICAgICAgICAgICB1cGRhdGVkQXQgZGF0ZXRpbWVcbiAgICAgICAgICB9XG5cbiAgICAgICAgICBQUk9EVUNULUNBVEVHT1JZIHtcbiAgICAgICAgICAgIGlkIGludFxuICAgICAgICAgICAgbmFtZSBpbnRcbiAgICAgICAgICAgIHBhcmVudElkIGludFxuICAgICAgICAgICAgcGF0aCB0ZXh0XG4gICAgICAgICAgICBjcmVhdGVkQXQgZGF0ZXRpbWVcbiAgICAgICAgICAgIHVwZGF0ZWRBdCBkYXRldGltZVxuICAgICAgICAgIH1cbiAgICAgICAgICAgICIsIm1lcm1haWQiOiJ7fSIsInVwZGF0ZUVkaXRvciI6ZmFsc2UsImF1dG9TeW5jIjpmYWxzZSwidXBkYXRlRGlhZ3JhbSI6ZmFsc2V9">Live Mermaid Link</a></p>
+</div>
+</div>
+<footer>
+<div aria-label="footer navigation" class="rst-footer-buttons" role="navigation">
+<a class="btn btn-neutral float-right" href="MySQL/V5/models/withdefine/" title="Models">Next <span class="icon icon-circle-arrow-right"></span></a>
+</div>
+<hr/>
+<div role="contentinfo">
+<!-- Copyright etc -->
+</div>
+
+  Built with <a href="https://www.mkdocs.org/">MkDocs</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+</footer>
+</div>
+</div>
+</section>
+</div>
+<div aria-label="versions" class="rst-versions" role="note">
+<span class="rst-current-version" data-toggle="rst-current-version">
+<a class="fa fa-github" href="https://github.com/gowrav-vishwakarma/sequelize-by-example.git/" style="float: left; color: #fcfcfc"> GitHub</a>
+<span style="margin-left: 15px"><a href="MySQL/V5/models/withdefine/" style="color: #fcfcfc">Next »</a></span>
+</span>
+</div>
+<script>var base_url = '.';</script>
+<script defer="" src="js/theme.js"></script>
+<script defer="" src="https://unpkg.com/mermaid/dist/mermaid.min.js"></script>
+<script defer="" src="search/main.js"></script>
+<script defer="">
+        window.onload = function () {
+            SphinxRtdTheme.Navigation.enable(true);
+        };
+    </script>
+<script>mermaid.initialize({
+    theme: "dark"
+});</script></body>
+</html>
+<!--
+MkDocs version : 1.1.2
+Build Date UTC : 2021-06-25 13:05:17.569926+00:00
+-->
